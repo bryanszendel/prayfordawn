@@ -1,6 +1,6 @@
-import db from "../database/db-config.js";
+const db = require("../database/db-config.js");
 
-export default {
+module.exports = {
   find,
   findById,
   add,

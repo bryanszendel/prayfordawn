@@ -1,9 +1,8 @@
+const Slots = require("./timeSlotsModel.js");
 const router = require("express").Router();
-import { find, findById, add, edit, remove } from "./timeSlots-model.js";
-import { validateItemId, validatePostReqBody } from "../api/middleware.js";
 
 router.get("/", (req, res) => {
-  find()
+  Slots.find()
     .then((items) => {
       res.status(200).json(items);
     })
@@ -13,9 +12,9 @@ router.get("/", (req, res) => {
     });
 });
 
-router.get("/:id", validateItemId, (req, res) => {
+router.get("/:id", (req, res) => {
   const id = req.params.id;
-  findById(id)
+  Slots.findById(id)
     .then((item) => {
       res.status(200).json(item);
     })
@@ -25,9 +24,9 @@ router.get("/:id", validateItemId, (req, res) => {
     });
 });
 
-router.post("/", validatePostReqBody, (req, res) => {
+router.post("/", (req, res) => {
   const item = req.body;
-  add(item)
+  Slots.add(item)
     .then((id) => {
       [newItemId] = id;
       return findById(newItemId);
@@ -40,10 +39,10 @@ router.post("/", validatePostReqBody, (req, res) => {
     });
 });
 
-router.put("/:id", validateItemId, (req, res) => {
+router.put("/:id", (req, res) => {
   const id = req.params.id;
   const updated = req.body;
-  edit(id, updated)
+  Slots.edit(id, updated)
     .then((updatedItemId) => {
       return findById(updatedItemId);
     })
@@ -55,9 +54,9 @@ router.put("/:id", validateItemId, (req, res) => {
     });
 });
 
-router.delete("/:id", validateItemId, (req, res) => {
+router.delete("/:id", (req, res) => {
   const id = req.params.id;
-  remove(id)
+  Slots.remove(id)
     .then((deleted) => {
       res.status(200).json({ message: "Successfully removed the item." });
     })
@@ -66,4 +65,4 @@ router.delete("/:id", validateItemId, (req, res) => {
     });
 });
 
-export default router;
+module.exports = router;
